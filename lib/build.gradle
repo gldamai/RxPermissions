@@ -50,3 +50,44 @@ dependencies {
     testImplementation rootProject.ext.robolectric
     testImplementation rootProject.ext.khronosOpenGLApi
 }
+
+// 添加 maven-publish 插件配置
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = rootProject.ext.publishedGroupId
+            artifactId = rootProject.ext.artifact
+            version = rootProject.ext.libraryVersion
+
+            artifact("$buildDir/outputs/aar/${project.name}-release.aar")
+
+            // 添加 Maven 元数据信息
+            pom {
+                name = rootProject.ext.libraryName
+                description = rootProject.ext.libraryDescription
+                url = rootProject.ext.siteUrl
+
+                licenses {
+                    license {
+                        name = rootProject.ext.licenseName
+                        url = rootProject.ext.licenseUrl
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = rootProject.ext.developerId
+                        name = rootProject.ext.developerName
+                        email = rootProject.ext.developerEmail
+                    }
+                }
+
+                scm {
+                    connection = "scm:git:${rootProject.ext.gitUrl}"
+                    developerConnection = "scm:git:ssh://github.com:${rootProject.ext.developerId}/${rootProject.ext.libraryName}.git"
+                    url = rootProject.ext.siteUrl
+                }
+            }
+        }
+    }
+}
